@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout pageTitle="Richard's Portfolio">
+  <div class="filter-group">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="pico8">Pico8</button>
+    <button class="filter-btn" data-filter="3d">3D</button>
+  </div>
+
+  <div class="gallery">
+    <!-- Vidéo Donut -->
+    <div class="image" data-category="3d" data-video="/visual_art/3d/video_donut.mp4">
+      <span>
+        <img src="/visual_art/3d/donut1.png" alt="Donut - 2024" />
+        <div class="play-badge"><i class="fas fa-play"></i></div>
+      </span>
+    </div>
+
+    <!-- Image Donut classique -->
+    <div class="image" data-category="3d">
+      <span>
+        <img src="/visual_art/3d/donut.png" alt="Donut - 2024" />
+      </span>
+    </div>
+
+    <!-- Image Sonic classique -->
+    <div class="image" data-category="3d">
+      <span>
+        <img src="/visual_art/3d/sonic.png" alt="2025" />
+      </span>
+    </div>
+
+    <!-- Image diverse -->
+    <div class="image" data-category="3d">
+      <span>
+        <img src="/visual_art/1.png" alt="Un Pas vers l'Avant - 2026" />
+      </span>
+    </div>
+
+    <!-- Vidéo Personnage Zaia -->
+    <div class="image" data-category="3d" data-video="/visual_art/3d/video_zaia.mp4">
+      <span>
+        <img src="/visual_art/3d/zaia_160.webp" alt="Zaïa - 2026" />
+        <div class="play-badge"><i class="fas fa-play"></i></div>
+      </span>
+    </div>
+
+    
+
+    <!-- Lecteur Pico-8 -->
+    <div class="image" data-category="pico8" data-pico8="/visual_art/pico8/dvd.html">
+      <span>
+        <img src="/visual_art/pico8/dvd.png" alt="DVD screensaver - 2024" />
+        <div class="play-badge"><i class="fas fa-gamepad"></i></div>
+      </span>
+    </div>
+
+    <div class="image" data-category="pico8" data-pico8="/visual_art/pico8/rubiks_cube.html">
+      <span>
+        <img src="/visual_art/pico8/rubiks_cube.png" alt="Rubik's cube - 2026" />
+        <div class="play-badge"><i class="fas fa-gamepad"></i></div>
+      </span>
+    </div>
+
+    <div class="image" data-category="pico8" data-pico8="/visual_art/pico8/tesseract.html">
+      <span>
+        <img src="/visual_art/pico8/tesseract.png" alt="Tesseract also called Hypercube - 2026" />
+        <div class="play-badge"><i class="fas fa-gamepad"></i></div>
+      </span>
+    </div>
+
+    <div class="image" data-category="pico8" data-pico8="/visual_art/pico8/morpion.html">
+      <span>
+        <img src="/visual_art/pico8/morpion.png" alt="Tic Tac Toe (X: e/d/s/f + Q ; O: up/down/left/right + x ; reset: c) - 2024" />
+        <div class="play-badge"><i class="fas fa-gamepad"></i></div>
+      </span>
+    </div>
+
+    
+    
+    <div class="image" data-category="pico8" data-pico8="/visual_art/pico8/voiture.html">
+      <span>
+        <img src="/visual_art/pico8/voiture.png" alt="(controls:left/right ; reset: x) - 2025" />
+        <div class="play-badge"><i class="fas fa-gamepad"></i></div>
+      </span>
+    </div>
+
+    <div class="image" data-category="pico8" data-pico8="/visual_art/pico8/voiture_rl.html">
+      <span>
+        <img src="/visual_art/pico8/voiture_rl.png" alt="Reinforcement Learning Version - 2025" />
+        <div class="play-badge"><i class="fas fa-gamepad"></i></div>
+      </span>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  <!-- Structure Lightbox (sans doublons) -->
+  <div class="preview-box">
+    <div class="image-box">
+      <div class="close-icon"><i class="fas fa-times"></i></div>
+      <img src="" alt="Aperçu" style="display: none;" />
+      <video src="" controls playsinline style="display: none;"></video>
+      <iframe src="" style="display: none;"></iframe>
+    </div>
+    <p class="lightbox-title"></p>
+  </div>
+
+  <!-- Flèches flottantes -->
+  <div class="lightbox-arrow prev"><i class="fas fa-chevron-left"></i></div>
+  <div class="lightbox-arrow next"><i class="fas fa-chevron-right"></i></div>
+
+  <div class="shadow"></div>
+</BaseLayout>
+
+
+
+
+
+
+
+
+<script is:inline>
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  const allCards = document.querySelectorAll(".gallery .image");
+  const previewBox = document.querySelector(".preview-box");
+  const previewImg = previewBox.querySelector("img");
+  const previewVideo = previewBox.querySelector("video");
+  const previewFrame = previewBox.querySelector("iframe");
+  const lightboxTitle = previewBox.querySelector(".lightbox-title");
+  const closeIcon = previewBox.querySelector(".close-icon");
+  const shadow = document.querySelector(".shadow");
+  const prevBtn = document.querySelector(".lightbox-arrow.prev");
+  const nextBtn = document.querySelector(".lightbox-arrow.next");
+
+  let currentIndex = 0;
+
+  function getVisibleCards() {
+    return Array.from(allCards).filter(card => !card.classList.contains("hide"));
+  }
+
+  function loadMedia(index) {
+    const list = getVisibleCards();
+    if (!list.length) return;
+
+    currentIndex = (index + list.length) % list.length;
+    const currentItem = list[currentIndex];
+    const imgEl = currentItem.querySelector("img");
+    const videoSrc = currentItem.getAttribute("data-video");
+    const picoSrc = currentItem.getAttribute("data-pico8");
+
+    lightboxTitle.textContent = imgEl ? imgEl.alt : "";
+
+    previewImg.style.display = "none";
+    previewVideo.style.display = "none";
+    previewVideo.pause();
+    previewVideo.src = "";
+    previewFrame.style.display = "none";
+    previewFrame.src = "";
+
+    if (picoSrc) {
+      previewFrame.style.display = "block";
+      previewFrame.src = picoSrc;
+    } else if (videoSrc) {
+      previewVideo.style.display = "block";
+      previewVideo.src = videoSrc;
+    } else if (imgEl) {
+      previewImg.style.display = "block";
+      previewImg.src = imgEl.src;
+    }
+  }
+
+  // Clic sur une carte
+  allCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const list = getVisibleCards();
+      const clickedIdx = list.indexOf(card);
+      if (clickedIdx !== -1) {
+        loadMedia(clickedIdx);
+        document.body.style.overflow = "hidden";
+        previewBox.classList.add("show");
+        prevBtn.classList.add("show");
+        nextBtn.classList.add("show");
+        shadow.style.display = "block";
+      }
+    });
+  });
+
+  // Navigation en boucle
+  prevBtn.onclick = (e) => {
+    e.stopPropagation();
+    loadMedia(currentIndex - 1);
+  };
+
+  nextBtn.onclick = (e) => {
+    e.stopPropagation();
+    loadMedia(currentIndex + 1);
+  };
+
+  // Fermeture
+  const closeBox = () => {
+    previewVideo.pause();
+    previewVideo.src = "";
+    previewFrame.src = "";
+    previewBox.classList.remove("show");
+    prevBtn.classList.remove("show");
+    nextBtn.classList.remove("show");
+    shadow.style.display = "none";
+    document.body.style.overflow = "auto";
+  };
+
+  closeIcon.onclick = closeBox;
+  shadow.onclick = closeBox;
+
+  // Filtrage
+  filterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const filterValue = btn.getAttribute("data-filter");
+
+      allCards.forEach(card => {
+        const cat = card.getAttribute("data-category");
+        if (filterValue === "all" || cat === filterValue) {
+          card.classList.remove("hide");
+        } else {
+          card.classList.add("hide");
+        }
+      });
+    });
+  });
+</script>

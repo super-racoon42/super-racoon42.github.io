@@ -1,0 +1,37 @@
+---
+import '../styles/global.css'
+
+const { pageTitle } = Astro.props;
+---
+
+<html lang="fr">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+		<meta name="viewport" content="width=device-width" />
+		<title>{pageTitle}</title>
+	</head>
+	<body>
+
+		<header>
+			<h1><a href="/">RICHARD'S PORTFOLIO</a></h1>
+		</header>
+
+        <hr width="100%" size="2">
+
+		<nav>
+			<a href="/">ABOUT</a> &nbsp;
+			<a href="/visual_art">VISUAL ART</a> &nbsp;
+			<a href="/photography">PHOTOGRAPHY</a> &nbsp;
+			<a href="/blog">BLOG</a>
+		</nav>
+
+        <hr width="100%" size="2">
+		
+		<main>
+			<slot />
+		</main>
+
+	</body>
+</html>

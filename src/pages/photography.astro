@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout pageTitle="Richard's Portfolio">
+
+  <div class="gallery">
+    <div class="image"><span><img src="/photography/P1070523.webp" alt="Nouvel An Chinois - Paris 13, 2026" /></span></div>
+    <div class="image"><span><img src="/photography/drapeau.webp" alt="Nouvel An Chinois - Paris 13, 2026" /></span></div>
+    <div class="image"><span><img src="/photography/pigeon.webp" alt="2026" /></span></div>
+    <div class="image"><span><img src="/photography/P1070501_01.webp" alt="Nouvel An Chinois - Paris 13, 2026" /></span></div>
+    <div class="image"><span><img src="/photography/P1040726.webp" alt="Inwangsan - Corée, 2026" /></span></div>
+    <div class="image"><span><img src="/photography/chat.webp" alt="Inwangsan - Corée, 2026" /></span></div>
+    <div class="image"><span><img src="/photography/P1040727.webp" alt="Inwangsan - Corée, 2026" /></span></div>
+    <div class="image"><span><img src="/photography/abeille.webp" alt="Bukhansan - Corée, 2026" /></span></div>
+    <div class="image"><span><img src="/photography/oiseau.webp" alt="Ansan - Corée, 2026" /></span></div>
+  </div>
+
+  <div class="preview-box">
+    <div class="image-box">
+      <div class="close-icon"><i class="fas fa-times"></i></div>
+      <img src="" alt="Aperçu" />
+    </div>
+    <p class="lightbox-title"></p>
+  </div>
+
+  <div class="lightbox-arrow prev"><i class="fas fa-chevron-left"></i></div>
+  <div class="lightbox-arrow next"><i class="fas fa-chevron-right"></i></div>
+
+  <div class="shadow"></div>
+
+</BaseLayout>
+
+<script is:inline>
+  const allImages = Array.from(document.querySelectorAll(".gallery .image"));
+  const previewBox = document.querySelector(".preview-box");
+  const previewImg = previewBox.querySelector("img");
+  const lightboxTitle = previewBox.querySelector(".lightbox-title");
+  const closeIcon = previewBox.querySelector(".close-icon");
+  const shadow = document.querySelector(".shadow");
+  const prevBtn = document.querySelector(".lightbox-arrow.prev");
+  const nextBtn = document.querySelector(".lightbox-arrow.next");
+
+  let currentIndex = 0;
+
+  function showImage(index) {
+    currentIndex = (index + allImages.length) % allImages.length;
+    const targetImg = allImages[currentIndex].querySelector("img");
+
+    if (targetImg) {
+      previewImg.src = targetImg.src;
+      previewImg.style.display = "block"; 
+      lightboxTitle.textContent = targetImg.alt || "";
+    }
+  }
+
+  function openLightbox(index) {
+    showImage(index);
+    document.body.style.overflow = "hidden";
+    previewBox.classList.add("show");
+    prevBtn.classList.add("show");
+    nextBtn.classList.add("show");
+    shadow.style.display = "block";
+  }
+
+  function closeLightbox() {
+    previewBox.classList.remove("show");
+    prevBtn.classList.remove("show");
+    nextBtn.classList.remove("show");
+    shadow.style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+
+  allImages.forEach((item, index) => {
+    item.onclick = () => openLightbox(index);
+  });
+
+  prevBtn.onclick = (e) => {
+    e.stopPropagation();
+    showImage(currentIndex - 1);
+  };
+
+  nextBtn.onclick = (e) => {
+    e.stopPropagation();
+    showImage(currentIndex + 1);
+  };
+
+  closeIcon.onclick = closeLightbox;
+  shadow.onclick = closeLightbox;
+</script>

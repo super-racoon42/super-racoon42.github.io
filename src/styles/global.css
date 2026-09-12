@@ -1,0 +1,324 @@
+@import url('https://fonts.cdnfonts.com/css/w95fa');
+/* =========================================
+   1. STYLES DE BASE ET NAVIGATION
+   ========================================= */
+
+/* * { 
+  color: black; 
+  font-family: 'monocraft', 'Tahoma', sans-serif;
+} */
+
+* { 
+  color: black; 
+  font-family: 'W95FA', 'MS Sans Serif', sans-serif;
+  
+  
+  /* Désactive le lissage pour garder les pixels nets */
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+}
+
+header {
+  text-align: center;
+}
+
+h1 {
+  font-family: Broadway;
+}
+
+header h1 a {
+  color: inherit;         
+  text-decoration: none;  
+  font-family: inherit;   
+}
+
+h1 a:hover {
+  text-decoration: underline; 
+}
+
+nav {
+  text-align: center;
+  font-size: 19px;
+  /* margin: 20px 0; */
+}
+
+nav a {
+  text-decoration: none;
+  color: black;
+  margin: 0 10px;        
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+p {
+  text-indent: 50px;
+}
+
+.contact{
+    text-align: center
+}
+
+/* =========================================
+   2. FILTRES (Boutons All, Pico8, 3D)
+   ========================================= */
+
+.filter-group {
+  display: flex;
+  justify-content: center; 
+  gap: 12px;              
+  margin: 20px 0;    
+        
+}
+
+.filter-group button {
+  background-color: #333333; 
+  color: #ffffff;           
+  border: none;              
+  border-radius: 0px;        
+  padding: 10px 20px;       /* Un peu plus d'espace interne */
+  font-size: 20px;          /* Ajuste ici (ex: 20px, 24px, 30px) */
+  width: auto;              /* S'adapte naturellement à la nouvelle taille */
+  min-width: 100px;         /* Garde une largeur minimale homogène */
+  cursor: pointer;           
+  transition: background-color 0.2s;
+  text-align: center;
+}
+
+.filter-group button:hover {
+  background-color: #555555; 
+}
+
+.filter-group button.active {
+  background-color: #000000;
+  font-weight: bold;
+}
+
+/* =========================================
+   3. GALERIE D'IMAGES ET BADGES VIDÉO/JEU
+   ========================================= */
+
+.gallery {
+  column-count: 4;
+  column-gap: 16px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 16px;
+}
+
+.gallery .image {
+  margin-bottom: 16px;
+  break-inside: avoid;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Le conteneur span sert de repère et cache le débordement du zoom */
+.gallery .image span {
+  display: block;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.gallery .image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+/* Zoom au survol de la vignette */
+.gallery .image:hover img {
+  transform: scale(1.08);
+}
+
+/* Badges de lecture (Play / Gamepad) */
+.play-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.65);
+  color: #ffffff !important;
+  font-size: 18px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  z-index: 2;
+}
+
+.play-badge i {
+  color: #ffffff !important;
+}
+
+.gallery .image:hover .play-badge {
+  transform: translate(-50%, -50%) scale(1.15);
+  background: rgba(0, 0, 0, 0.85);
+}
+
+/* =========================================
+   4. NOUVELLE LIGHTBOX (Style Minimaliste)
+   ========================================= */
+
+.preview-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  background: transparent;
+  max-width: 80vw;
+  max-height: 85vh;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.25s ease;
+}
+
+.preview-box.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.preview-box .image-box {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  background: #000;
+}
+
+.preview-box .image-box img,
+.preview-box .image-box video {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  display: block;
+}
+
+.preview-box .image-box iframe {
+  width: 512px;
+  height: 512px;
+  border: none;
+}
+
+/* Titre blanc centré sous la photo */
+.lightbox-title {
+  color: #ffffff;
+  font-size: 25px;
+  margin-top: 14px;
+  text-align: center;
+  text-indent: 0;
+  letter-spacing: 0.5px;
+  font-family: inherit;
+}
+
+/* Bouton Fermer (en haut à droite) */
+.close-icon {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  color: #ffffff !important;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+.close-icon i {
+  color: #ffffff !important;
+}
+
+.close-icon:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+/* Flèches de navigation flottantes */
+.lightbox-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffff !important;
+  font-size: 38px;
+  cursor: pointer;
+  z-index: 110;
+  opacity: 0;
+  pointer-events: none;
+  padding: 20px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.lightbox-arrow i {
+  color: #ffffff !important;
+}
+
+.lightbox-arrow.show {
+  opacity: 0.8;
+  pointer-events: auto;
+}
+
+.lightbox-arrow:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.15);
+}
+
+.lightbox-arrow.prev { left: 25px; }
+.lightbox-arrow.next { right: 25px; }
+
+/* Voile sombre en arrière-plan */
+.shadow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 90;
+  display: none;
+}
+
+/* =========================================
+   5. ADAPTATION MOBILE (Responsive)
+   ========================================= */
+
+@media (max-width: 900px) {
+  .gallery { column-count: 2; }
+}
+
+@media (max-width: 500px) {
+  .gallery { column-count: 1; }
+  
+  /* Rapproche les flèches du bord de l'écran sur mobile */
+  .lightbox-arrow {
+    font-size: 24px;
+    padding: 10px;
+  }
+  .lightbox-arrow.prev { left: 5px; }
+  .lightbox-arrow.next { right: 5px; }
+}
+
+.gallery .image.hide {
+  display: none !important;
+}
